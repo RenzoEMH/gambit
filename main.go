@@ -1,4 +1,4 @@
-package gambit
+package main
 
 import (
 	"context"
