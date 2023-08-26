@@ -82,8 +82,10 @@ func SelectProduct(request events.APIGatewayV2HTTPRequest) (int, string) {
 	page, _ = strconv.Atoi(param["page"])
 	pageSize, _ = strconv.Atoi(param["pageSize"])
 	orderType = param["orderType"]   // D = Desc. A o Nil = ASC
-	orderField = param["orderField"] // 'I' Id, 'T' Title, 'D' Description, 'F' Created At, 'P' Price, 'C' CategId, 'S' Stock
-	if !strings.Contains("ITDFPCS", orderField) {
+	orderField = param["orderField"] // 'I' Id, 'T' Title, 'D' Description, 'F' Created At
+	// 'P' Price, 'C' CategId, 'S' Stock
+
+	if !strings.Contains("ITDFPCS", orderType) {
 		orderField = ""
 	}
 
@@ -113,12 +115,12 @@ func SelectProduct(request events.APIGatewayV2HTTPRequest) (int, string) {
 
 	result, err2 := bd.SelectProduct(t, choice, page, pageSize, orderType, orderField)
 	if err2 != nil {
-		return 400, "Ocurrio un error al intentar capturar los resultados de la busqueda de tipo '" + choice + "' en productos > " + err2.Error()
+		return 400, "Ocurrió un error al intentar capturar los resultados de la búsqueda de tipo '" + choice + "' en productos > " + err2.Error()
 	}
 
 	Product, err3 := json.Marshal(result)
 	if err3 != nil {
-		return 400, "Ocurrio un error al intentar covnertir en JSON la busqueda de Productos"
+		return 400, "Ocurrió un error al intentar convertir en JSON la busqueda de Productos"
 	}
 
 	return 200, string(Product)

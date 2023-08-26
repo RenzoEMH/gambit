@@ -126,7 +126,7 @@ func DeleteProduct(id int) error {
 }
 
 func SelectProduct(p models.Product, choice string, page int, pageSize int, orderType string, orderField string) (models.ProductResp, error) {
-	fmt.Println("Comienza Select Product")
+	fmt.Println("Comienza SelectProduct")
 	var Resp models.ProductResp
 	var Prod []models.Product
 
@@ -138,7 +138,7 @@ func SelectProduct(p models.Product, choice string, page int, pageSize int, orde
 
 	var sentencia string
 	var sentenciaCount string
-	var where, limit string
+	var where, limit, join string
 
 	sentencia = "SELECT Prod_Id, Prod_Title, Prod_Description, Prod_CreatedAt, Prod_Updated, Prod_Price, Prod_Path, Prod_CategoryId, Prod_Stock FROM products "
 	sentenciaCount = "SELECT count(*) as registros FROM products "
@@ -147,13 +147,13 @@ func SelectProduct(p models.Product, choice string, page int, pageSize int, orde
 	case "P":
 		where = " WHERE Prod_Id = " + strconv.Itoa(p.ProdId)
 	case "S":
-		where = " WHERE UCASE(CONCAT(Prod_Title, Prod_Description)) LIKE '%'" + strings.ToUpper(p.ProdSearch) + "%' "
+		where = " WHERE UCASE(CONCAT(Prod_Title, Prod_Description)) LIKE '%" + strings.ToUpper(p.ProdSearch) + "%' "
 	case "C":
 		where = " WHERE Prod_CategoryId = " + strconv.Itoa(p.ProdCategId)
 	case "U":
-		where = " WHERE UCASE(Prod_Path) LIKE '%'" + strings.ToUpper(p.ProdPath) + "%' "
+		where = " WHERE UCASE(Prod_Path) LIKE '%" + strings.ToUpper(p.ProdPath) + "%' "
 	case "K":
-		join := " JOIN category ON Prod_CategoryId = Categ_Id AND Categ_Path LIKE '%" + strings.ToUpper(p.ProdCategPath) + "%'"
+		join = " JOIN category ON Prod_CategoryId = Categ_Id AND Categ_Path LIKE '%" + strings.ToUpper(p.ProdCategPath) + "%' "
 		sentencia += join
 		sentenciaCount += join
 	}
@@ -248,6 +248,6 @@ func SelectProduct(p models.Product, choice string, page int, pageSize int, orde
 	Resp.TotalItems = registros
 	Resp.Data = Prod
 
-	fmt.Println("Select Product > Ejecucion exitoosa")
+	fmt.Println("Select Product > Ejecución Exitosa")
 	return Resp, nil
 }
