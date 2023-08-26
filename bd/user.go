@@ -26,11 +26,10 @@ func UpdateUser(UField models.User, User string) error {
 	}
 
 	if len(UField.UserLastName) > 0 {
-		coma = ","
 		sentencia += coma + "User_LastName = '" + UField.UserLastName + "'"
 	}
 
-	sentencia += ", User_DateUpg = '" + tools.FechaMySQL() + "' WHERE User_UUID'" + User + "'"
+	sentencia += ", User_DateUpg = '" + tools.FechaMySQL() + "' WHERE User_UUID='" + User + "'"
 
 	_, err = Db.Exec(sentencia)
 	if err != nil {
@@ -38,6 +37,6 @@ func UpdateUser(UField models.User, User string) error {
 		return err
 	}
 
-	fmt.Println("Update User > Ejecucion Exitosa")
+	fmt.Println("Update User > Ejecución Exitosa")
 	return nil
 }
